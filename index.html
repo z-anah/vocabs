@@ -28,51 +28,148 @@
 
 <body>
     <div id="app" class="app-shell">
+
         <main class="app-container">
 
-            <header class="space-y-1">
-                <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                    Vocabulary Learning
-                </p>
+            <!-- Loading -->
+            <div v-if="isLoading" class="flex min-h-[60vh] items-center justify-center">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined animate-spin">
+                        progress_activity
+                    </span>
 
-                <h1 class="font-display text-2xl font-bold tracking-tight">
-                    Vocabs
-                </h1>
-            </header>
+                    <span class="text-sm text-zinc-500 dark:text-zinc-400">
+                        Loading...
+                    </span>
+                </div>
+            </div>
 
-            <section class="mt-8">
-                <div class="surface p-5">
+            <!-- Error -->
+            <div v-else-if="errorMessage" class="surface p-5">
+                <div class="flex items-start gap-3">
 
-                    <div class="flex items-start gap-3">
-                        <div
-                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800">
-                            <span class="material-symbols-outlined text-zinc-700 dark:text-zinc-200">
-                                menu_book
-                            </span>
-                        </div>
+                    <span class="material-symbols-outlined text-zinc-600 dark:text-zinc-300">
+                        error
+                    </span>
 
-                        <div>
-                            <h2 class="font-display text-base font-semibold">
-                                Choose a category
-                            </h2>
+                    <div>
+                        <h2 class="font-display font-semibold">
+                            Something went wrong
+                        </h2>
 
-                            <p class="mt-1 text-sm leading-5 text-zinc-500 dark:text-zinc-400">
-                                Select a vocabulary topic to start learning.
-                            </p>
-                        </div>
+                        <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                            {{ errorMessage }}
+                        </p>
                     </div>
 
                 </div>
-            </section>
+            </div>
+
+            <!-- Application -->
+            <template v-else>
+
+                <!-- Header -->
+                <header class="flex items-start justify-between">
+
+                    <div>
+                        <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                            Vocabulary Learning
+                        </p>
+
+                        <h1 class="mt-1 font-display text-2xl font-bold tracking-tight">
+                            Vocabs
+                        </h1>
+                    </div>
+
+                    <button type="button"
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                        title="Back to language selection" @click="goToLanguageSelection">
+                        <span class="material-symbols-outlined">
+                            home
+                        </span>
+                    </button>
+
+                </header>
+
+                <!-- Debug State -->
+                <section class="mt-8 surface p-5">
+
+                    <p class="text-xs font-medium uppercase tracking-wider text-zinc-400">
+                        Current State
+                    </p>
+
+                    <dl class="mt-4 space-y-3 text-sm">
+
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-zinc-500 dark:text-zinc-400">
+                                Screen
+                            </dt>
+
+                            <dd class="font-medium">
+                                {{ currentScreen }}
+                            </dd>
+                        </div>
+
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-zinc-500 dark:text-zinc-400">
+                                Language
+                            </dt>
+
+                            <dd class="font-medium">
+                                {{ currentLanguage?.name || "—" }}
+                            </dd>
+                        </div>
+
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-zinc-500 dark:text-zinc-400">
+                                Category
+                            </dt>
+
+                            <dd class="font-medium">
+                                {{ currentCategory?.name || "—" }}
+                            </dd>
+                        </div>
+
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-zinc-500 dark:text-zinc-400">
+                                Mode
+                            </dt>
+
+                            <dd class="font-medium">
+                                {{ selectedMode || "—" }}
+                            </dd>
+                        </div>
+
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-zinc-500 dark:text-zinc-400">
+                                Vocabulary
+                            </dt>
+
+                            <dd class="font-medium">
+                                {{ vocabulary.length }}
+                            </dd>
+                        </div>
+
+                    </dl>
+
+                </section>
+
+            </template>
 
         </main>
+
     </div>
 
     <!-- Vue 3 CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <!-- Application -->
+    <script src="./js/parser.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/data.js"></script>
     <script src="./js/app.js"></script>
+
+
 </body>
 
 </html>
