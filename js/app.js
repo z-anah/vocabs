@@ -8,6 +8,34 @@ const App = {
 
             // Available data
             languages: Object.values(LANGUAGES),
+
+            learningModes: [
+                {
+                    id: "browse",
+                    name: "Browse Vocabulary",
+                    description: "View all vocabulary items and hear their pronunciation.",
+                    icon: "menu_book",
+                },
+                {
+                    id: "one_by_one",
+                    name: "Learn One by One",
+                    description: "Learn each vocabulary item in a predefined order.",
+                    icon: "play_circle",
+                },
+                {
+                    id: "audio_to_image",
+                    name: "Guess Image from Audio",
+                    description: "Listen to the pronunciation and choose the matching image.",
+                    icon: "volume_up",
+                },
+                {
+                    id: "image_guess",
+                    name: "Guess the Image",
+                    description: "Look at an image and guess the vocabulary item.",
+                    icon: "image",
+                },
+            ],
+
             categories: [],
             vocabulary: [],
 
@@ -28,6 +56,10 @@ const App = {
     },
 
     computed: {
+        modeCount() {
+            return this.learningModes.length;
+        },
+
         currentLanguage() {
             return getLanguage(this.selectedLanguage);
         },

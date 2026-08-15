@@ -266,6 +266,148 @@
 
             </template>
 
+            <!-- Learning Mode Selection -->
+            <template v-else-if="currentScreen === 'mode'">
+
+                <header class="pt-4">
+
+                    <!-- Back -->
+                    <div class="flex items-center gap-3">
+
+                        <button type="button"
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                            aria-label="Back to vocabulary selection" @click="goToCategorySelection">
+                            <span class="material-symbols-outlined">
+                                arrow_back
+                            </span>
+                        </button>
+
+                        <div class="min-w-0">
+
+                            <p class="text-xs font-medium text-zinc-400">
+                                Vocabulary
+                            </p>
+
+                            <h1 class="mt-0.5 truncate font-display text-lg font-semibold">
+                                {{ currentCategory?.name }}
+                            </h1>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mt-8">
+
+                        <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                            Learning mode
+                        </p>
+
+                        <h2 class="mt-1 font-display text-3xl font-bold tracking-tight">
+                            How do you want to learn?
+                        </h2>
+
+                        <p class="mt-2 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+                            Choose a learning method for
+                            <span class="font-medium text-zinc-700 dark:text-zinc-200">
+                                {{ currentCategory?.name }}
+                            </span>.
+                        </p>
+
+                    </div>
+
+                </header>
+
+                <!-- Mode List -->
+                <section class="mt-8">
+
+                    <div class="space-y-2">
+
+                        <button v-for="mode in learningModes" :key="mode.id" type="button"
+                            class="group flex w-full items-center gap-4 rounded-xl border border-zinc-200 bg-white p-4 text-left transition hover:border-zinc-400 hover:bg-zinc-50 active:scale-[0.99] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600 dark:hover:bg-zinc-800"
+                            @click="selectMode(mode.id)">
+
+                            <!-- Icon -->
+                            <div
+                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800">
+                                <span class="material-symbols-outlined text-zinc-700 dark:text-zinc-200">
+                                    {{ mode.icon }}
+                                </span>
+                            </div>
+
+                            <!-- Text -->
+                            <div class="min-w-0 flex-1">
+
+                                <div class="flex items-center justify-between gap-3">
+
+                                    <h3 class="font-display text-sm font-semibold">
+                                        {{ mode.name }}
+                                    </h3>
+
+                                    <span
+                                        class="material-symbols-outlined shrink-0 text-lg text-zinc-400 transition-transform group-hover:translate-x-0.5">
+                                        arrow_forward
+                                    </span>
+
+                                </div>
+
+                                <p class="mt-1.5 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
+                                    {{ mode.description }}
+                                </p>
+
+                            </div>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <!-- Session Information -->
+                <section class="mt-6 surface p-4">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <p class="text-xs text-zinc-400">
+                                Language
+                            </p>
+
+                            <p class="mt-1 text-sm font-medium" :dir="selectedLanguage === 'arabic' ? 'rtl' : 'ltr'">
+                                {{ currentLanguage?.nativeName }}
+                            </p>
+
+                        </div>
+
+                        <div class="h-8 w-px bg-zinc-200 dark:bg-zinc-800"></div>
+
+                        <div class="text-right">
+
+                            <p class="text-xs text-zinc-400">
+                                Items
+                            </p>
+
+                            <p class="mt-1 text-sm font-medium">
+                                {{ vocabulary.length }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <footer class="mt-6">
+
+                    <p class="text-center text-xs text-zinc-400">
+                        {{ modeCount }} learning modes
+                    </p>
+
+                </footer>
+
+            </template>
+
         </main>
 
     </div>
