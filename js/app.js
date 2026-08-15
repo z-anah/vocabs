@@ -31,26 +31,34 @@ const App = {
     currentLanguage() {
       return getLanguage(this.selectedLanguage);
     },
-
+  
     currentCategory() {
       return this.categories.find(
         (category) => category.id === this.selectedCategory
       ) ?? null;
     },
-
+  
     currentItem() {
       return this.vocabulary[this.currentIndex] ?? null;
     },
-
+  
     currentVocabularyText() {
       if (!this.currentItem || !this.selectedLanguage) {
         return "";
       }
-
+  
       return getVocabularyText(
         this.currentItem,
         this.selectedLanguage
       );
+    },
+  
+    languageCount() {
+      return this.languages.length;
+    },
+  
+    categoryCount() {
+      return this.categories.length;
     },
   },
 
