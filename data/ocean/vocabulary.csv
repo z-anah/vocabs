@@ -1,0 +1,9 @@
+id,category_id,english_us,indonesian,arabic,french,malagasy,image
+OCEAN-001,ocean,ocean,laut,مُحِيط,océan,driaka,ocean.jpg
+OCEAN-002,ocean,wave,gelombang,مَوْج,vague,onja,wave.jpg
+OCEAN-003,ocean,fish,ikan,سَمَك,poisson,trondro,fish.jpg
+OCEAN-004,ocean,shark,hiu,قِرْش,requin,antsantsa,shark.jpg
+OCEAN-005,ocean,whale,paus,حُوت,baleine,antsantsa lehibe,whale.jpg
+OCEAN-006,ocean,dolphin,lumba-lumba,دُولْفِين,dauphin,dofina,dolphin.jpg
+OCEAN-007,ocean,turtle,kura-kura,سُلَحْفَاة,tortue,sokatra,turtle.jpg
+OCEAN-008,ocean,coral,karang,مُرْجَان,corail,haran-dranomasina,coral.jpg

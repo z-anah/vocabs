@@ -1,0 +1,9 @@
+id,category_id,english_us,indonesian,arabic,french,malagasy,image
+AIR-001,airplane,airplane,pesawat terbang,طَائِرَة,avion,fiaramanidina,airplane.jpg
+AIR-002,airplane,airport,bandara,مَطَار,aéroport,seranam-piaramanidina,airport.jpg
+AIR-003,airplane,pilot,pilot,طَيَّار,pilote,m pilote,pilot.jpg
+AIR-004,airplane,passenger,penumpang,مُسَافِر,passager,mPandeha,passenger.jpg
+AIR-005,airplane,seat,kursi,مَقْعَد,siège,seza,seat.jpg
+AIR-006,airplane,window,jendela,نَافِذَة,hublot,varavarankely,window.jpg
+AIR-007,airplane,luggage,bagasi,أَمْتِعَة,bagages,vokatra,luggage.jpg
+AIR-008,airplane,ticket,tiket,تَذْكِرَة,billet,tapakila,ticket.jpg

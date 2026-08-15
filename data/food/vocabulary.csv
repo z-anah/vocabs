@@ -1,0 +1,9 @@
+id,category_id,english_us,indonesian,arabic,french,malagasy,image
+FOOD-001,food,bread,roti,خُبْز,pain,mofomamy,bread.jpg
+FOOD-002,food,apple,apel,تُفَّاحَة,pomme,paoma,apple.jpg
+FOOD-003,food,banana,pisang,مَوْزَة,banane,akondro,banana.jpg
+FOOD-004,food,milk,susu,حَلِيب,lait,ronono,milk.jpg
+FOOD-005,food,cheese,keju,جُبْن,fromage,fromazy,cheese.jpg
+FOOD-006,food,rice,nasi,أَرُز,riz,vary,rice.jpg
+FOOD-007,food,egg,telur,بَيْضَة,œuf,atody,egg.jpg
+FOOD-008,food,water,air,مَاء,eau,rano,water.jpg

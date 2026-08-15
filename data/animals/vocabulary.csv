@@ -1,0 +1,9 @@
+id,category_id,english_us,indonesian,arabic,french,malagasy,image
+ANI-001,animals,cat,kucing,قِطَّة,chat,saka,cat.jpg
+ANI-002,animals,dog,anjing,كَلْب,chien,alika,dog.jpg
+ANI-003,animals,bird,burung,طَائِر,oiseau,vorona,bird.jpg
+ANI-004,animals,horse,kuda,حِصَان,cheval,soavaly,horse.jpg
+ANI-005,animals,cow,sapi,بَقَرَة,vache,omby,cow.jpg
+ANI-006,animals,lion,singa,أَسَد,lion,liona,lion.jpg
+ANI-007,animals,elephant,gajah,فِيل,éléphant,elefanta,elephant.jpg
+ANI-008,animals,rabbit,kelinci,أَرْنَب,lapin,bitro,rabbit.jpg
