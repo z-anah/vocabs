@@ -1,180 +1,185 @@
 const { createApp } = Vue;
 
 const App = {
-  data() {
-    return {
-      // Current screen
-      currentScreen: "language",
+    data() {
+        return {
+            // Current screen
+            currentScreen: "language",
 
-      // Available data
-      languages: Object.values(LANGUAGES),
-      categories: [],
-      vocabulary: [],
+            // Available data
+            languages: Object.values(LANGUAGES),
+            categories: [],
+            vocabulary: [],
 
-      // User selections
-      selectedLanguage: null,
-      selectedCategory: null,
-      selectedMode: null,
+            // User selections
+            selectedLanguage: null,
+            selectedCategory: null,
+            selectedMode: null,
 
-      // Learning session
-      currentIndex: 0,
-      score: 0,
-      testedItems: [],
+            // Learning session
+            currentIndex: 0,
+            score: 0,
+            testedItems: [],
 
-      // UI state
-      isLoading: false,
-      errorMessage: "",
-    };
-  },
-
-  computed: {
-    currentLanguage() {
-      return getLanguage(this.selectedLanguage);
-    },
-  
-    currentCategory() {
-      return this.categories.find(
-        (category) => category.id === this.selectedCategory
-      ) ?? null;
-    },
-  
-    currentItem() {
-      return this.vocabulary[this.currentIndex] ?? null;
-    },
-  
-    currentVocabularyText() {
-      if (!this.currentItem || !this.selectedLanguage) {
-        return "";
-      }
-  
-      return getVocabularyText(
-        this.currentItem,
-        this.selectedLanguage
-      );
-    },
-  
-    languageCount() {
-      return this.languages.length;
-    },
-  
-    categoryCount() {
-      return this.categories.length;
-    },
-  },
-
-  async mounted() {
-    await this.initialize();
-  },
-
-  methods: {
-    async initialize() {
-      this.isLoading = true;
-      this.errorMessage = "";
-
-      try {
-        this.categories = await loadCategories();
-      } catch (error) {
-        console.error(error);
-
-        this.errorMessage =
-          "Unable to load vocabulary categories.";
-      } finally {
-        this.isLoading = false;
-      }
+            // UI state
+            isLoading: false,
+            errorMessage: "",
+        };
     },
 
-    selectLanguage(languageId) {
-      this.selectedLanguage = languageId;
+    computed: {
+        currentLanguage() {
+            return getLanguage(this.selectedLanguage);
+        },
 
-      this.selectedCategory = null;
-      this.selectedMode = null;
-      this.vocabulary = [];
+        currentCategory() {
+            return this.categories.find(
+                (category) => category.id === this.selectedCategory
+            ) ?? null;
+        },
 
-      this.currentIndex = 0;
-      this.score = 0;
-      this.testedItems = [];
+        currentItem() {
+            return this.vocabulary[this.currentIndex] ?? null;
+        },
 
-      this.currentScreen = "category";
+        currentVocabularyText() {
+            if (!this.currentItem || !this.selectedLanguage) {
+                return "";
+            }
+
+            return getVocabularyText(
+                this.currentItem,
+                this.selectedLanguage
+            );
+        },
+
+        languageCount() {
+            return this.languages.length;
+        },
+
+        categoryCount() {
+            return this.categories.length;
+        },
     },
 
-    async selectCategory(categoryId) {
-      this.selectedCategory = categoryId;
-      this.selectedMode = null;
-
-      this.currentIndex = 0;
-      this.score = 0;
-      this.testedItems = [];
-
-      this.isLoading = true;
-      this.errorMessage = "";
-
-      try {
-        this.vocabulary = await loadVocabulary(categoryId);
-
-        this.currentScreen = "mode";
-      } catch (error) {
-        console.error(error);
-
-        this.errorMessage =
-          "Unable to load this vocabulary dataset.";
-      } finally {
-        this.isLoading = false;
-      }
+    async mounted() {
+        await this.initialize();
     },
 
-    selectMode(modeId) {
-      this.selectedMode = modeId;
+    methods: {
 
-      this.currentIndex = 0;
-      this.score = 0;
-      this.testedItems = [];
+        getCategoryImage(category) {
+            return getCategoryImage(category);
+        },
 
-      this.currentScreen = "learning";
+        async initialize() {
+            this.isLoading = true;
+            this.errorMessage = "";
+
+            try {
+                this.categories = await loadCategories();
+            } catch (error) {
+                console.error(error);
+
+                this.errorMessage =
+                    "Unable to load vocabulary categories.";
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        selectLanguage(languageId) {
+            this.selectedLanguage = languageId;
+
+            this.selectedCategory = null;
+            this.selectedMode = null;
+            this.vocabulary = [];
+
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.currentScreen = "category";
+        },
+
+        async selectCategory(categoryId) {
+            this.selectedCategory = categoryId;
+            this.selectedMode = null;
+
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.isLoading = true;
+            this.errorMessage = "";
+
+            try {
+                this.vocabulary = await loadVocabulary(categoryId);
+
+                this.currentScreen = "mode";
+            } catch (error) {
+                console.error(error);
+
+                this.errorMessage =
+                    "Unable to load this vocabulary dataset.";
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        selectMode(modeId) {
+            this.selectedMode = modeId;
+
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.currentScreen = "learning";
+        },
+
+        goToLanguageSelection() {
+            this.selectedLanguage = null;
+            this.selectedCategory = null;
+            this.selectedMode = null;
+            this.vocabulary = [];
+
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.currentScreen = "language";
+        },
+
+        goToCategorySelection() {
+            this.selectedCategory = null;
+            this.selectedMode = null;
+            this.vocabulary = [];
+
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.currentScreen = "category";
+        },
+
+        goToModeSelection() {
+            this.selectedMode = null;
+
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.currentScreen = "mode";
+        },
+
+        restartLearning() {
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.currentScreen = "learning";
+        },
     },
-
-    goToLanguageSelection() {
-      this.selectedLanguage = null;
-      this.selectedCategory = null;
-      this.selectedMode = null;
-      this.vocabulary = [];
-
-      this.currentIndex = 0;
-      this.score = 0;
-      this.testedItems = [];
-
-      this.currentScreen = "language";
-    },
-
-    goToCategorySelection() {
-      this.selectedCategory = null;
-      this.selectedMode = null;
-      this.vocabulary = [];
-
-      this.currentIndex = 0;
-      this.score = 0;
-      this.testedItems = [];
-
-      this.currentScreen = "category";
-    },
-
-    goToModeSelection() {
-      this.selectedMode = null;
-
-      this.currentIndex = 0;
-      this.score = 0;
-      this.testedItems = [];
-
-      this.currentScreen = "mode";
-    },
-
-    restartLearning() {
-      this.currentIndex = 0;
-      this.score = 0;
-      this.testedItems = [];
-
-      this.currentScreen = "learning";
-    },
-  },
 };
 
 createApp(App).mount("#app");
