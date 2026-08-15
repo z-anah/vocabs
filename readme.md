@@ -13,20 +13,39 @@
 vocabs/
 ├── index.html
 ├── style.css
+│
 ├── data/
 │   ├── categories.csv
+│   │
 │   ├── ocean/
 │   │   └── vocabulary.csv
+│   │
 │   ├── airplane/
 │   │   └── vocabulary.csv
+│   │
 │   ├── animals/
 │   │   └── vocabulary.csv
+│   │
 │   ├── food/
 │   │   └── vocabulary.csv
+│   │
 │   └── hunger-games-characters/
 │       └── vocabulary.csv
+│
 ├── js/
+│   ├── app.js
+│   ├── data.js
+│   ├── parser.js
+│   └── utils.js
+│
 └── assets/
+    └── images/
+        ├── categories/
+        ├── ocean/
+        ├── airplane/
+        ├── animals/
+        ├── food/
+        └── hunger-games-characters/
 ```
 
 #### Creating file, folder etc
