@@ -408,6 +408,270 @@
 
             </template>
 
+            <!-- Browse Vocabulary -->
+            <template v-else-if="currentScreen === 'learning' && selectedMode === 'browse'">
+
+                <!-- Header -->
+                <header class="pt-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <button type="button"
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                            aria-label="Back to learning modes" @click="goToModeSelection">
+                            <span class="material-symbols-outlined">
+                                arrow_back
+                            </span>
+                        </button>
+
+                        <div class="min-w-0">
+
+                            <p class="text-xs font-medium text-zinc-400">
+                                {{ currentLanguage?.name }}
+                            </p>
+
+                            <h1 class="mt-0.5 truncate font-display text-lg font-semibold">
+                                {{ currentCategory?.name }}
+                            </h1>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-8">
+
+                        <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                            Browse
+                        </p>
+
+                        <h2 class="mt-1 font-display text-3xl font-bold tracking-tight">
+                            Vocabulary
+                        </h2>
+
+                        <p class="mt-2 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+                            Tap a word to hear its pronunciation.
+                        </p>
+
+                    </div>
+
+                </header>
+
+                <!-- Vocabulary Grid -->
+                <section class="mt-8">
+
+                    <div class="grid grid-cols-2 gap-3">
+
+                        <button v-for="item in vocabulary" :key="item.id" type="button"
+                            class="group overflow-hidden rounded-xl border border-zinc-200 bg-white text-left transition hover:border-zinc-400 hover:bg-zinc-50 active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600 dark:hover:bg-zinc-800"
+                            @click="speakVocabulary(item)">
+
+                            <!-- Image -->
+                            <div class="relative aspect-square overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+
+                                <img :src="getVocabularyImage(item, selectedCategory)"
+                                    :alt="getVocabularyText(item, selectedLanguage)" class="h-full w-full object-cover"
+                                    loading="lazy" @error="$event.target.style.display = 'none'">
+
+                                <div class="absolute inset-0 flex items-center justify-center">
+
+                                    <span class="material-symbols-outlined text-3xl text-zinc-300 dark:text-zinc-600">
+                                        image
+                                    </span>
+
+                                </div>
+
+                                <!-- Audio Indicator -->
+                                <div
+                                    class="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white/90 text-zinc-700 shadow-sm backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-200">
+                                    <span class="material-symbols-outlined text-lg">
+                                        volume_up
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <!-- Vocabulary -->
+                            <div class="p-3">
+
+                                <p class="font-display text-sm font-semibold leading-5"
+                                    :dir="selectedLanguage === 'arabic' ? 'rtl' : 'ltr'">
+                                    {{ getVocabularyText(item, selectedLanguage) }}
+                                </p>
+
+                            </div>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <!-- Footer -->
+                <footer class="mt-8">
+
+                    <p class="text-center text-xs text-zinc-400">
+                        {{ vocabulary.length }} vocabulary items
+                    </p>
+
+                </footer>
+
+            </template>
+
+            <!-- Placeholder for remaining screens -->
+
+            <!-- Remaining screens -->
+            <template v-else>
+
+                <section class="pt-8">
+
+                    <h1 class="font-display text-2xl font-bold">
+                        Learning
+                    </h1>
+
+                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                        This learning mode will be implemented next.
+                    </p>
+
+                </section>
+
+            </template>
+
+            <!--  -->
+
+            <!-- Learn One by One -->
+            <template v-else-if="currentScreen === 'learning' && selectedMode === 'one_by_one'">
+
+                <!-- Header -->
+                <header class="pt-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <button type="button"
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                            aria-label="Back to learning modes" @click="goToModeSelection">
+                            <span class="material-symbols-outlined">
+                                arrow_back
+                            </span>
+                        </button>
+
+                        <div class="min-w-0">
+
+                            <p class="text-xs font-medium text-zinc-400">
+                                {{ currentCategory?.name }}
+                            </p>
+
+                            <h1 class="mt-0.5 truncate font-display text-lg font-semibold">
+                                Learn One by One
+                            </h1>
+
+                        </div>
+
+                    </div>
+
+                </header>
+
+                <!-- Progress -->
+                <section class="mt-8">
+
+                    <div class="flex items-center justify-between">
+
+                        <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                            Vocabulary
+                        </p>
+
+                        <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                            {{ currentIndex + 1 }} / {{ vocabulary.length }}
+                        </p>
+
+                    </div>
+
+                    <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+
+                        <div class="h-full rounded-full bg-zinc-900 transition-all duration-300 dark:bg-zinc-100"
+                            :style="{
+            width: `${((currentIndex + 1) / vocabulary.length) * 100}%`
+          }"></div>
+
+                    </div>
+
+                </section>
+
+                <!-- Vocabulary -->
+                <section v-if="currentItem" class="mt-8">
+
+                    <!-- Image -->
+                    <div
+                        class="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+
+                        <div class="aspect-square">
+
+                            <img :src="getVocabularyImage(currentItem, selectedCategory)"
+                                :alt="getVocabularyText(currentItem, selectedLanguage)"
+                                class="h-full w-full object-cover" @error="$event.target.style.display = 'none'">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Word -->
+                    <div class="mt-6 text-center">
+
+                        <p class="font-display text-3xl font-bold tracking-tight"
+                            :dir="selectedLanguage === 'arabic' ? 'rtl' : 'ltr'">
+                            {{ getVocabularyText(currentItem, selectedLanguage) }}
+                        </p>
+
+                        <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                            {{ currentLanguage?.name }}
+                        </p>
+
+                    </div>
+
+                </section>
+
+                <!-- Controls -->
+                <section class="mt-8">
+
+                    <div class="grid grid-cols-2 gap-3">
+
+                        <!-- Replay -->
+                        <button type="button"
+                            class="flex h-12 items-center justify-center gap-2 rounded-xl border border-zinc-200 font-medium transition hover:bg-zinc-100 active:scale-[0.98] dark:border-zinc-800 dark:hover:bg-zinc-800"
+                            @click="speakCurrentItem">
+
+                            <span class="material-symbols-outlined text-lg">
+                                volume_up
+                            </span>
+
+                            <span>
+                                Hear
+                            </span>
+
+                        </button>
+
+                        <!-- Next -->
+                        <button type="button"
+                            class="flex h-12 items-center justify-center gap-2 rounded-xl bg-zinc-900 font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98] dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                            @click="nextVocabulary">
+
+                            <span>
+                                {{ currentIndex === vocabulary.length - 1 ? "Finish" : "Next" }}
+                            </span>
+
+                            <span class="material-symbols-outlined text-lg">
+                                arrow_forward
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </template>
+
+            <!--  -->
+
         </main>
 
     </div>
@@ -416,9 +680,9 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <!-- Application -->
+    <script src="./js/data.js"></script>
     <script src="./js/parser.js"></script>
     <script src="./js/utils.js"></script>
-    <script src="./js/data.js"></script>
     <script src="./js/app.js"></script>
 
 

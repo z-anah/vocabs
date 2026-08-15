@@ -52,6 +52,8 @@ const App = {
             // UI state
             isLoading: false,
             errorMessage: "",
+
+            isSpeaking: false,
         };
     },
 
@@ -100,8 +102,54 @@ const App = {
 
     methods: {
 
+        startOneByOne() {
+            this.currentIndex = 0;
+            this.testedItems = [];
+            this.score = 0;
+
+            this.speakCurrentItem();
+        },
+
+        speakCurrentItem() {
+            if (!this.currentItem) {
+                return;
+            }
+
+            this.speakVocabulary(this.currentItem);
+        },
+
+        nextVocabulary() {
+            if (this.currentIndex < this.vocabulary.length - 1) {
+                this.currentIndex += 1;
+
+                this.speakCurrentItem();
+
+                return;
+            }
+
+            this.currentIndex = 0;
+            this.currentScreen = "mode";
+        },
+
+        getVocabularyImage(item, selectedCategory) {
+            return getVocabularyImage(item, selectedCategory);
+        },
+
+        getVocabularyText(item, languageId) {
+            return getVocabularyText(item, languageId);
+        },
+
         getCategoryImage(category) {
             return getCategoryImage(category);
+        },
+
+        speakVocabulary(item) {
+            const text = getVocabularyText(
+                item,
+                this.selectedLanguage
+            );
+
+            speakText(text, this.selectedLanguage);
         },
 
         async initialize() {
@@ -167,6 +215,12 @@ const App = {
             this.testedItems = [];
 
             this.currentScreen = "learning";
+
+            if (modeId === "one_by_one") {
+                this.$nextTick(() => {
+                    this.startOneByOne();
+                });
+            }
         },
 
         goToLanguageSelection() {
