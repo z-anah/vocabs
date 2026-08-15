@@ -1,10 +1,59 @@
 :root {
     --font-body: "Inter", sans-serif;
     --font-display: "Plus Jakarta Sans", sans-serif;
+  
+    --color-bg: #fafafa;
+    --color-surface: #ffffff;
+    --color-border: #e4e4e7;
+    --color-text: #18181b;
+    --color-muted: #71717a;
+    --color-subtle: #a1a1aa;
+  
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+  
+    --transition-fast: 150ms ease;
+    --transition-normal: 200ms ease;
+  }
+  
+  .dark {
+    --color-bg: #09090b;
+    --color-surface: #18181b;
+    --color-border: #27272a;
+    --color-text: #fafafa;
+    --color-muted: #a1a1aa;
+    --color-subtle: #71717a;
+  }
+  
+  html {
+    min-height: 100%;
+    background: var(--color-bg);
   }
   
   body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
     font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    cursor: not-allowed;
   }
   
   .font-display {
@@ -26,4 +75,60 @@
     font-feature-settings: "liga";
     -webkit-font-feature-settings: "liga";
     -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Mobile-first application shell */
+  
+  .app-shell {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--color-bg);
+  }
+  
+  .app-container {
+    width: 100%;
+    max-width: 28rem;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+  }
+  
+  /* Minimal borders */
+  
+  .surface {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--color-border);
+  }
+  
+  /* Focus accessibility */
+  
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+  
+  /* Prevent accidental horizontal overflow */
+  
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Respect reduced motion */
+  
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
   }
