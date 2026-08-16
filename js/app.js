@@ -62,6 +62,12 @@ const App = {
             quizAnswered: false,
             quizCorrect: false,
             quizFinished: false,
+
+            imageGuessItems: [],
+            imageGuessOptions: [],
+            imageGuessAnswered: false,
+            imageGuessCorrect: false,
+            imageGuessFinished: false,
         };
     },
 
@@ -110,9 +116,100 @@ const App = {
 
     beforeUnmount() {
         stopSpeaking();
-      },
+    },
 
     methods: {
+
+        startImageGuess() {
+            this.currentIndex = 0;
+            this.score = 0;
+            this.testedItems = [];
+
+            this.imageGuessItems = shuffleArray([
+                ...this.vocabulary,
+            ]);
+
+            this.imageGuessOptions = [];
+            this.imageGuessAnswered = false;
+            this.imageGuessCorrect = false;
+            this.imageGuessFinished = false;
+
+            this.createImageGuessQuestion();
+        },
+
+        createImageGuessQuestion() {
+            if (!this.imageGuessItems.length) {
+                return;
+            }
+
+            const correctItem =
+                this.imageGuessItems[this.currentIndex];
+
+            const otherItems = this.vocabulary.filter(
+                (item) => item.id !== correctItem.id
+            );
+
+            const randomOthers = shuffleArray(
+                otherItems
+            ).slice(0, 3);
+
+            this.imageGuessOptions = shuffleArray([
+                correctItem,
+                ...randomOthers,
+            ]);
+
+            this.imageGuessAnswered = false;
+            this.imageGuessCorrect = false;
+        },
+
+        hintImageGuess() {
+            const item =
+                this.imageGuessItems[this.currentIndex];
+
+            this.speakVocabulary(item);
+        },
+
+        answerImageGuess(item) {
+            if (this.imageGuessAnswered) {
+                return;
+            }
+
+            const correctItem =
+                this.imageGuessItems[this.currentIndex];
+
+            this.imageGuessAnswered = true;
+
+            this.imageGuessCorrect =
+                item.id === correctItem.id;
+
+            if (this.imageGuessCorrect) {
+                this.score += 1;
+            }
+
+            this.testedItems.push(correctItem.id);
+
+            this.stopSpeech();
+        },
+
+        nextImageGuess() {
+            this.stopSpeech();
+
+            if (
+                this.currentIndex >=
+                this.imageGuessItems.length - 1
+            ) {
+                this.imageGuessFinished = true;
+                return;
+            }
+
+            this.currentIndex += 1;
+
+            this.createImageGuessQuestion();
+        },
+
+        restartImageGuess() {
+            this.startImageGuess();
+        },
 
         resetImageErrors() {
             this.imageErrors = {};
@@ -382,6 +479,12 @@ const App = {
             this.quizCorrect = false;
             this.quizFinished = false;
 
+            this.imageGuessItems = [];
+            this.imageGuessOptions = [];
+            this.imageGuessAnswered = false;
+            this.imageGuessCorrect = false;
+            this.imageGuessFinished = false;
+
             this.resetImageErrors();
             this.stopSpeech();
 
@@ -398,6 +501,12 @@ const App = {
             if (modeId === "audio_to_image") {
                 this.$nextTick(() => {
                     this.startAudioToImage();
+                });
+            }
+
+            if (modeId === "image_guess") {
+                this.$nextTick(() => {
+                    this.startImageGuess();
                 });
             }
         },
@@ -417,35 +526,35 @@ const App = {
 
         goToCategorySelection() {
             this.stopSpeech();
-          
+
             this.currentScreen = "category";
-          
+
             this.selectedMode = null;
-          
+
             this.currentIndex = 0;
             this.score = 0;
-          
+
             this.quizItems = [];
             this.quizOptions = [];
             this.quizAnswered = false;
             this.quizCorrect = false;
             this.quizFinished = false;
-          },
+        },
 
         goToModeSelection() {
             this.stopSpeech();
-          
+
             this.currentScreen = "mode";
-          
+
             this.currentIndex = 0;
             this.score = 0;
-          
+
             this.quizItems = [];
             this.quizOptions = [];
             this.quizAnswered = false;
             this.quizCorrect = false;
             this.quizFinished = false;
-          },
+        },
 
         restartLearning() {
             this.currentIndex = 0;
