@@ -2,6 +2,8 @@
 
 A **mobile-first multilingual vocabulary learning platform** built with **Vue 3, Tailwind CSS, and browser-native Text-to-Speech**.
 
+![Vocabulary Learning App](https://github.com/z-anah/vocabs/blob/main/vocabs.png?raw=true)
+
 Designed for language learning, visual memorization, and custom knowledge datasets — from everyday vocabulary to **character names, places, objects, and specialized topics**.
 
 ## Features
