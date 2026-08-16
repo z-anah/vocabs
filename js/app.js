@@ -54,6 +54,12 @@ const App = {
             errorMessage: "",
 
             isSpeaking: false,
+
+            quizItems: [],
+            quizOptions: [],
+            quizAnswered: false,
+            quizCorrect: false,
+            quizFinished: false,
         };
     },
 
@@ -101,6 +107,80 @@ const App = {
     },
 
     methods: {
+
+        startAudioToImage() {
+            this.currentIndex = 0;
+            this.score = 0;
+
+            this.testedItems = [];
+
+            this.quizItems = shuffleArray([...this.vocabulary]);
+            this.quizOptions = [];
+            this.quizAnswered = false;
+            this.quizCorrect = false;
+            this.quizFinished = false;
+
+            this.createAudioQuestion();
+        },
+
+        createAudioQuestion() {
+            if (!this.quizItems.length) {
+                return;
+            }
+
+            const correctItem = this.quizItems[this.currentIndex];
+
+            const otherItems = this.vocabulary.filter(
+                (item) => item.id !== correctItem.id
+            );
+
+            const randomOthers = shuffleArray(otherItems).slice(0, 3);
+
+            this.quizOptions = shuffleArray([
+                correctItem,
+                ...randomOthers,
+            ]);
+
+            this.quizAnswered = false;
+            this.quizCorrect = false;
+
+            this.$nextTick(() => {
+                this.speakVocabulary(correctItem);
+            });
+        },
+
+        answerAudioQuestion(item) {
+            if (this.quizAnswered) {
+                return;
+            }
+
+            const correctItem = this.quizItems[this.currentIndex];
+
+            this.quizAnswered = true;
+
+            this.quizCorrect = item.id === correctItem.id;
+
+            if (this.quizCorrect) {
+                this.score += 1;
+            }
+
+            this.testedItems.push(correctItem.id);
+        },
+
+        nextAudioQuestion() {
+            if (this.currentIndex >= this.quizItems.length - 1) {
+                this.quizFinished = true;
+                return;
+            }
+
+            this.currentIndex += 1;
+
+            this.createAudioQuestion();
+        },
+
+        restartAudioToImage() {
+            this.startAudioToImage();
+        },
 
         startOneByOne() {
             this.currentIndex = 0;
@@ -214,11 +294,23 @@ const App = {
             this.score = 0;
             this.testedItems = [];
 
+            this.quizItems = [];
+            this.quizOptions = [];
+            this.quizAnswered = false;
+            this.quizCorrect = false;
+            this.quizFinished = false;
+
             this.currentScreen = "learning";
 
             if (modeId === "one_by_one") {
                 this.$nextTick(() => {
                     this.startOneByOne();
+                });
+            }
+
+            if (modeId === "audio_to_image") {
+                this.$nextTick(() => {
+                    this.startAudioToImage();
                 });
             }
         },
