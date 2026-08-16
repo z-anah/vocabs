@@ -53,6 +53,8 @@ const App = {
             isLoading: false,
             errorMessage: "",
 
+            imageErrors: {},
+            ttsError: "",
             isSpeaking: false,
 
             quizItems: [],
@@ -106,7 +108,37 @@ const App = {
         await this.initialize();
     },
 
+    beforeUnmount() {
+        stopSpeaking();
+      },
+
     methods: {
+
+        resetImageErrors() {
+            this.imageErrors = {};
+        },
+
+        hasImageError(item) {
+            return Boolean(
+                item?.id && this.imageErrors[item.id]
+            );
+        },
+
+        handleImageError(item) {
+            if (!item?.id) {
+                return;
+            }
+
+            this.imageErrors = {
+                ...this.imageErrors,
+                [item.id]: true,
+            };
+        },
+        stopSpeech() {
+            stopSpeaking();
+
+            this.isSpeaking = false;
+        },
 
         startAudioToImage() {
             this.currentIndex = 0;
@@ -154,17 +186,21 @@ const App = {
                 return;
             }
 
-            const correctItem = this.quizItems[this.currentIndex];
+            const correctItem =
+                this.quizItems[this.currentIndex];
 
             this.quizAnswered = true;
 
-            this.quizCorrect = item.id === correctItem.id;
+            this.quizCorrect =
+                item.id === correctItem.id;
 
             if (this.quizCorrect) {
                 this.score += 1;
             }
 
             this.testedItems.push(correctItem.id);
+
+            this.stopSpeech();
         },
 
         nextAudioQuestion() {
@@ -199,10 +235,17 @@ const App = {
         },
 
         nextVocabulary() {
-            if (this.currentIndex < this.vocabulary.length - 1) {
+            this.stopSpeech();
+
+            if (
+                this.currentIndex <
+                this.vocabulary.length - 1
+            ) {
                 this.currentIndex += 1;
 
-                this.speakCurrentItem();
+                this.$nextTick(() => {
+                    this.speakCurrentItem();
+                });
 
                 return;
             }
@@ -229,7 +272,37 @@ const App = {
                 this.selectedLanguage
             );
 
-            speakText(text, this.selectedLanguage);
+            if (!text) {
+                return;
+            }
+
+            this.ttsError = "";
+
+            this.isSpeaking = true;
+
+            const started = speakText(
+                text,
+                this.selectedLanguage,
+                {
+                    onStart: () => {
+                        this.isSpeaking = true;
+                    },
+
+                    onEnd: () => {
+                        this.isSpeaking = false;
+                    },
+
+                    onError: () => {
+                        this.isSpeaking = false;
+                        this.ttsError = "Unable to play pronunciation.";
+                    },
+                }
+            );
+
+            if (!started) {
+                this.isSpeaking = false;
+                this.ttsError = "Speech synthesis is not available.";
+            }
         },
 
         async initialize() {
@@ -270,6 +343,15 @@ const App = {
             this.score = 0;
             this.testedItems = [];
 
+            this.quizItems = [];
+            this.quizOptions = [];
+            this.quizAnswered = false;
+            this.quizCorrect = false;
+            this.quizFinished = false;
+
+            this.resetImageErrors();
+            this.stopSpeech();
+
             this.isLoading = true;
             this.errorMessage = "";
 
@@ -300,6 +382,11 @@ const App = {
             this.quizCorrect = false;
             this.quizFinished = false;
 
+            this.resetImageErrors();
+            this.stopSpeech();
+
+            this.ttsError = "";
+
             this.currentScreen = "learning";
 
             if (modeId === "one_by_one") {
@@ -329,26 +416,36 @@ const App = {
         },
 
         goToCategorySelection() {
-            this.selectedCategory = null;
+            this.stopSpeech();
+          
+            this.currentScreen = "category";
+          
             this.selectedMode = null;
-            this.vocabulary = [];
-
+          
             this.currentIndex = 0;
             this.score = 0;
-            this.testedItems = [];
-
-            this.currentScreen = "category";
-        },
+          
+            this.quizItems = [];
+            this.quizOptions = [];
+            this.quizAnswered = false;
+            this.quizCorrect = false;
+            this.quizFinished = false;
+          },
 
         goToModeSelection() {
-            this.selectedMode = null;
-
+            this.stopSpeech();
+          
+            this.currentScreen = "mode";
+          
             this.currentIndex = 0;
             this.score = 0;
-            this.testedItems = [];
-
-            this.currentScreen = "mode";
-        },
+          
+            this.quizItems = [];
+            this.quizOptions = [];
+            this.quizAnswered = false;
+            this.quizCorrect = false;
+            this.quizFinished = false;
+          },
 
         restartLearning() {
             this.currentIndex = 0;

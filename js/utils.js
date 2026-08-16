@@ -141,9 +141,9 @@ function getCategoryVocabularyPath(categoryId) {
     return `./data/${categoryId}/vocabulary.csv`;
 }
 
-function speakText(text, languageId) {
+function speakText(text, languageId, options = {}) {
     if (!text || !("speechSynthesis" in window)) {
-        return;
+        return false;
     }
 
     const language = getLanguage(languageId);
@@ -153,10 +153,30 @@ function speakText(text, languageId) {
     const utterance = new SpeechSynthesisUtterance(text);
 
     utterance.lang = language.ttsCode;
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
+    utterance.rate = options.rate ?? 0.9;
+    utterance.pitch = options.pitch ?? 1;
+
+    if (typeof options.onStart === "function") {
+        utterance.onstart = options.onStart;
+    }
+
+    if (typeof options.onEnd === "function") {
+        utterance.onend = options.onEnd;
+    }
+
+    if (typeof options.onError === "function") {
+        utterance.onerror = options.onError;
+    }
 
     window.speechSynthesis.speak(utterance);
+
+    return true;
+}
+
+function stopSpeaking() {
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
 }
 
 function shuffleArray(array) {
@@ -172,4 +192,8 @@ function shuffleArray(array) {
     }
 
     return result;
+}
+
+function getImageFallbackIcon() {
+    return "image";
 }
